@@ -1,0 +1,20 @@
+:root {
+  --color-bosnyd-dark: #2B1B17;
+  --color-bosnyd-dark-soft: #36221D;
+  --color-bosnyd-ivory: #F3EFE6;
+  --color-bosnyd-white: #FFFFFF;
+  --color-bosnyd-black: #171717;
+  --color-bosnyd-green: #25D366;
+
+  --font-title: Georgia, "Times New Roman", serif;
+  --font-body: Arial, Helvetica, sans-serif;
+
+  --container-width: 1200px;
+  --border-radius: 4px;
+
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 40px;
+  --space-xl: 64px;
+}
