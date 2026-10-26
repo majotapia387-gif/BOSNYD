@@ -1,3 +1,4 @@
+
 function Footer() {
   return (
     <footer className="footer">
@@ -31,7 +32,12 @@ function Footer() {
         <p>
           © {new Date().getFullYear()} BOSNYD. Todos los derechos reservados.
         </p>
+
         <p>Barranquilla, Colombia.</p>
+      </div>
+
+      <div className="footer__admin">
+        <a href="/login">Acceso administrador</a>
       </div>
     </footer>
   );
