@@ -6,12 +6,10 @@ import Collection from "./pages/Collection";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
-import "./styles/Admi.css";
+import StyleFinder from "./components/StyleFinder";
+import "./styles/admi.css";
 
 function App() {
-  // PRUEBA TEMPORAL: muestra la ruta que está leyendo React.
-  console.log("Ruta actual:", window.location.pathname);
-
   const [path, setPath] = useState(window.location.pathname);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -41,9 +39,7 @@ function App() {
       setIsAuthenticated(true);
       navigate("/admin");
     } else {
-      alert(
-        "Correo o contraseña incorrectos. Revisa los datos de prueba."
-      );
+      alert("Correo o contraseña incorrectos. Revisa los datos de prueba.");
     }
   }
 
@@ -52,12 +48,10 @@ function App() {
     navigate("/login");
   }
 
-  // PÁGINA DE INICIO DE SESIÓN
   if (path === "/login") {
     return <Login onLogin={handleLogin} />;
   }
 
-  // PANEL DE ADMINISTRACIÓN
   if (path === "/admin") {
     if (!isAuthenticated) {
       return <Login onLogin={handleLogin} />;
@@ -66,13 +60,13 @@ function App() {
     return <Admin onLogout={handleLogout} />;
   }
 
-  // PÁGINA PRINCIPAL DE BOSNYD
   return (
     <>
       <Navbar />
 
       <main>
         <Home />
+        <StyleFinder />
         <Collection />
       </main>
 
