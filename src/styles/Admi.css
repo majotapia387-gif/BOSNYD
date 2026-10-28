@@ -1,0 +1,192 @@
+
+/* LOGIN */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  background: #f2eee6;
+  color: #27231f;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 42px;
+  background: #fffdf9;
+}
+
+.login-brand,
+.admin-brand {
+  color: #27231f;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-decoration: none;
+}
+
+.login-brand span {
+  font-size: 12px;
+  vertical-align: top;
+}
+
+.login-eyebrow,
+.admin-eyebrow {
+  margin-top: 35px;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.login-card h1 {
+  margin: 12px 0;
+  font-size: 42px;
+  font-weight: 500;
+}
+
+.login-description,
+.admin-description {
+  line-height: 1.7;
+  color: #777067;
+}
+
+.login-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.login-card label {
+  font-size: 13px;
+}
+
+.login-card input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #d8d0c4;
+  background: transparent;
+  font: inherit;
+}
+
+.login-submit {
+  margin-top: 12px;
+  padding: 16px;
+  border: 0;
+  background: #29251f;
+  color: #fffdf9;
+  cursor: pointer;
+}
+
+.login-error {
+  color: #a32626;
+  font-size: 13px;
+}
+
+.login-back {
+  display: inline-block;
+  margin-top: 24px;
+  color: inherit;
+  font-size: 13px;
+}
+
+.login-note {
+  margin-top: 28px;
+  color: #827b72;
+  font-size: 11px;
+}
+
+/* ADMINISTRACIÓN */
+.admin-page {
+  min-height: 100vh;
+  padding: 28px 5%;
+  background: #f2eee6;
+  color: #29251f;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #d8d0c4;
+}
+
+.admin-logout {
+  padding: 12px 18px;
+  border: 1px solid #29251f;
+  background: transparent;
+  cursor: pointer;
+}
+
+.admin-content {
+  max-width: 1100px;
+  margin: 55px auto;
+}
+
+.admin-stats,
+.admin-product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin: 28px 0;
+}
+
+.admin-stat,
+.admin-product {
+  padding: 20px;
+  background: #fffdf9;
+}
+
+.admin-stat p {
+  color: #777067;
+}
+
+.admin-stat strong {
+  font-size: 26px;
+}
+
+.admin-section-heading {
+  margin-top: 45px;
+}
+
+.admin-product img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.admin-product-info h3 {
+  margin-bottom: 8px;
+}
+
+.admin-product-description,
+.admin-footnote {
+  color: #777067;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .login-card {
+    padding: 28px 22px;
+  }
+
+  .admin-stats,
+  .admin-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-content {
+    margin-top: 32px;
+  }
+}
+
+@media (max-width: 400px) {
+  .admin-stats,
+  .admin-product-grid {
+    grid-template-columns: 1fr;
+  }
+}

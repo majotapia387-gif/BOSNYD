@@ -110,163 +110,288 @@ a {
     padding: 20px 16px;
   }
 
+ stify-content: center;
+    gap: 16px;
+  }
   .navbar__links {
     flex-wrap: wrap;
     justify-content: center;
     gap: 16px;
   }
-}/* =========================
+
+/* =========================
    COLECCIÓN BOSNYD
+   Estética editorial premium
 ========================= */
 
 .collection {
   width: 100%;
-  padding: 88px 32px;
+  padding: 100px 32px;
   background-color: var(--color-bosnyd-ivory);
+  color: var(--color-bosnyd-dark);
 }
 
 .collection__header {
   max-width: 720px;
-  margin: 0 auto 48px;
+  margin: 0 auto 58px;
   text-align: center;
 }
 
 .collection__eyebrow {
-  margin-bottom: 14px;
-  font-size: 12px;
+  margin-bottom: 18px;
+  color: #8b6d5d;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: 2.8px;
 }
 
 .collection__header h2 {
   margin-bottom: 18px;
   font-family: var(--font-title);
-  font-size: clamp(32px, 5vw, 52px);
+  font-size: clamp(38px, 5vw, 58px);
   font-weight: 400;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
 }
 
 .collection__intro {
-  max-width: 520px;
+  max-width: 480px;
   margin: 0 auto;
-  color: #65554f;
-  font-size: 15px;
-  line-height: 1.8;
+  color: #75645a;
+  font-size: 14px;
+  line-height: 1.9;
 }
+
+/* Cuadrícula de productos */
 
 .collection__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
   gap: 24px;
   max-width: var(--container-width);
   margin: 0 auto;
 }
 
+/* Tarjetas */
+
 .product-card {
+  display: flex;
   min-width: 0;
+  flex-direction: column;
   overflow: hidden;
-  background-color: var(--color-bosnyd-white);
+  border: 1px solid rgba(43, 27, 23, 0.07);
+  border-radius: 10px;
+  background-color: #fffdfa;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
+.product-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(43, 27, 23, 0.14);
+  box-shadow: 0 14px 32px rgba(43, 27, 23, 0.08);
+}
+
+/* Fotografía */
+
+.product-card__image-container,
 .product-card__image-link {
   position: relative;
   display: block;
   overflow: hidden;
-  background-color: #e9e4db;
+  background-color: #eee8de;
 }
 
 .product-card__image {
+  display: block;
   width: 100%;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.55s ease;
 }
 
 .product-card:hover .product-card__image {
-  transform: scale(1.04);
+  transform: scale(1.035);
 }
 
 .product-card__label {
   position: absolute;
   top: 14px;
   left: 14px;
-  padding: 7px 10px;
-  background-color: var(--color-bosnyd-ivory);
+  padding: 8px 11px;
+  border: 1px solid rgba(43, 27, 23, 0.08);
+  border-radius: 30px;
+  background-color: rgba(243, 239, 230, 0.94);
   color: var(--color-bosnyd-dark);
-  font-size: 10px;
+  font-size: 9px;
+  font-weight: 600;
   letter-spacing: 1px;
 }
 
+/* Información del producto */
+
 .product-card__content {
-  padding: 20px 16px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 22px 18px 20px;
 }
 
 .product-card__heading {
   display: flex;
-  align-items: flex-start;
+  align-items: baseline;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .product-card__heading h3 {
   font-family: var(--font-title);
-  font-size: 22px;
+  font-size: 23px;
   font-weight: 400;
+  line-height: 1.2;
 }
 
 .product-card__price {
-  font-size: 13px;
+  color: var(--color-bosnyd-dark);
+  font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
 }
 
 .product-card__description {
   min-height: 66px;
-  margin-bottom: 16px;
-  color: #65554f;
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-.product-card__color {
   margin-bottom: 18px;
+  color: #75645a;
   font-size: 12px;
-  color: #65554f;
+  line-height: 1.8;
 }
 
-.product-card__color span {
+/* Selector de colores */
+
+.product-card__color,
+.product-card__colors {
+  margin-bottom: 18px;
+  color: #75645a;
+  font-size: 12px;
+}
+
+.product-card__color span,
+.product-card__colors strong {
   color: var(--color-bosnyd-dark);
-  font-weight: 700;
+  font-weight: 600;
 }
 
-.product-card__button {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  border: 1px solid var(--color-bosnyd-dark);
-  background-color: var(--color-bosnyd-dark);
-  color: var(--color-bosnyd-ivory);
-  text-align: center;
-  font-size: 12px;
-  letter-spacing: 1px;
+.product-card__color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.product-card__color-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border: 1px solid #ded6cc;
+  border-radius: 30px;
+  background-color: transparent;
+  color: #65554f;
+  font-family: var(--font-body);
+  font-size: 11px;
+  cursor: pointer;
   transition:
+    border-color 0.2s ease,
     background-color 0.2s ease,
     color 0.2s ease;
 }
 
-.product-card__button:hover {
-  background-color: transparent;
+.product-card__color-button:hover {
+  border-color: #8b6d5d;
+}
+
+.product-card__color-button.is-selected {
+  border-color: var(--color-bosnyd-dark);
+  background-color: #eee7dc;
   color: var(--color-bosnyd-dark);
 }
 
-.collection__footer {
-  margin-top: 48px;
-  text-align: center;
-  font-family: var(--font-title);
-  font-size: 17px;
+.product-card__color-swatch {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  border: 1px solid rgba(43, 27, 23, 0.2);
+  border-radius: 50%;
 }
 
-/* Adaptación para tabletas */
+.product-card__color-swatch--marfil {
+  background-color: #f3efe6;
+}
+
+.product-card__color-swatch--negro {
+  background-color: #171717;
+  border-color: #171717;
+}
+
+/* Botón de producto */
+
+.product-card__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 46px;
+  margin-top: auto;
+  padding: 11px 16px;
+  border: 1px solid var(--color-bosnyd-dark);
+  border-radius: 30px;
+  background-color: var(--color-bosnyd-dark);
+  color: var(--color-bosnyd-ivory);
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.product-card__button:hover {
+  transform: translateY(-2px);
+  border-color: #8b6d5d;
+  background-color: #8b6d5d;
+  color: #fffdfa;
+}
+
+.product-card__button:focus-visible,
+.product-card__color-button:focus-visible {
+  outline: 2px solid #8b6d5d;
+  outline-offset: 3px;
+}
+
+/* Cierre de colección */
+
+.collection__footer {
+  margin-top: 55px;
+  color: #75645a;
+  text-align: center;
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-style: italic;
+}
+
+/* Tabletas y pantallas medianas */
 
 @media (max-width: 1000px) {
   .collection__grid {
@@ -275,34 +400,127 @@ a {
   }
 }
 
-/* Adaptación para celulares */
+/* Celulares */
 
 @media (max-width: 600px) {
   .collection {
-    padding: 60px 18px;
+    padding: 70px 18px;
   }
 
   .collection__header {
-    margin-bottom: 32px;
+    margin-bottom: 35px;
+  }
+
+  .collection__eyebrow {
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  .collection__header h2 {
+    font-size: clamp(36px, 9vw, 46px);
+  }
+
+  .collection__intro {
+    max-width: 330px;
+    font-size: 13px;
   }
 
   .collection__grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .product-card {
+    border-radius: 8px;
   }
 
   .product-card__image {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 3 / 4;
+  }
+
+  .product-card__label {
+    top: 8px;
+    left: 8px;
+    padding: 6px 8px;
+    font-size: 8px;
+    letter-spacing: 0.5px;
   }
 
   .product-card__content {
-    padding: 18px;
+    padding: 14px 11px;
+  }
+
+  .product-card__heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .product-card__heading h3 {
+    font-size: 20px;
+  }
+
+  .product-card__price {
+    font-size: 11px;
   }
 
   .product-card__description {
-    min-height: auto;
+    min-height: 72px;
+    margin-bottom: 13px;
+    font-size: 11px;
+    line-height: 1.65;
   }
-}/* =========================
+
+  .product-card__color,
+  .product-card__colors {
+    font-size: 11px;
+  }
+
+  .product-card__color-options {
+    gap: 6px;
+  }
+
+  .product-card__color-button {
+    gap: 5px;
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .product-card__color-swatch {
+    width: 11px;
+    height: 11px;
+  }
+
+  .product-card__button {
+    min-height: 42px;
+    padding: 9px 8px;
+    font-size: 10px;
+    letter-spacing: 0.2px;
+  }
+
+  .collection__footer {
+    margin-top: 38px;
+    font-size: 16px;
+  }
+}
+
+/* Accesibilidad: reducir movimiento */
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card,
+  .product-card__image,
+  .product-card__button,
+  .product-card__color-button {
+    transition: none;
+  }
+
+  .product-card:hover,
+  .product-card__button:hover {
+    transform: none;
+  }
+}
+
+/* =========================
    FOOTER BOSNYD
 ========================= */
 

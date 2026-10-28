@@ -1,9 +1,8 @@
-
 import "../styles/Home.css";
 
 function Home() {
   return (
-    <main className="home">
+    <div className="home">
       {/* PORTADA PRINCIPAL */}
       <section className="hero" id="inicio">
         <div className="hero__image" aria-hidden="true" />
@@ -122,11 +121,11 @@ function Home() {
           </p>
         </div>
 
-        <a className="contact__button" href="#contact">
+        <a className="contact__button" href="#contact-form">
           CONTÁCTANOS <span aria-hidden="true">↗</span>
         </a>
       </section>
-    </main>
+    </div>
   );
 }
 
