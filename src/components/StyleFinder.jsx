@@ -213,12 +213,14 @@ function StyleFinder() {
 
       {showResult && recommendation && (
         <div className="style-finder__result" aria-live="polite">
-          <div className="style-finder__result-image">
-            <img
-              src={recommendation.selectedColor.image}
-              alt={`${recommendation.product.name} en color ${recommendation.selectedColor.name}`}
-            />
-          </div>
+         <div className="style-finder__result-image">
+  <img
+    src={recommendation.selectedColor.image}
+    alt={`${recommendation.product.name} en color ${recommendation.selectedColor.name}`}
+    onLoad={() => console.log("Imagen cargada:", recommendation.selectedColor.image)}
+    onError={() => console.error("Error al cargar imagen:", recommendation.selectedColor.image)}
+  />
+</div>
 
           <div className="style-finder__result-content">
             <p className="style-finder__eyebrow">
