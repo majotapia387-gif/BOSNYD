@@ -1,12 +1,15 @@
 
 import { useEffect, useState } from "react";
+
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Collection from "./pages/Collection";
+import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import StyleFinder from "./components/StyleFinder";
+
 import "./styles/admi.css";
 
 function App() {
@@ -64,13 +67,13 @@ function App() {
     <>
       <Navbar />
 
-      <main>
-        <Home />
-        <StyleFinder />
-        <Collection />
-      </main>
-
-      <Footer />
+     
+      <Footer /><main>
+  <Home />
+  <StyleFinder />
+  <Collection />
+  <Contact />
+</main>
     </>
   );
 }
