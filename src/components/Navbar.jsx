@@ -1,4 +1,9 @@
-function Navbar() {
+function Navbar({ cartCount = 0, navigate }) {
+  function handleCartClick(event) {
+    event.preventDefault();
+    navigate("/carrito");
+  }
+
   return (
     <header className="navbar">
       <div className="navbar__container">
@@ -12,6 +17,14 @@ function Navbar() {
           <a href="#about">Nosotras</a>
           <a href="#contact-form">Contacto</a>
         </nav>
+
+        <a
+          href="/carrito"
+          className="navbar__cart"
+          onClick={handleCartClick}
+        >
+          Carrito ({cartCount})
+        </a>
       </div>
     </header>
   );

@@ -1,8 +1,7 @@
-
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 
-function Product({ productId, navigate }) {
+function Product({ productId, navigate, onAddToCart, cartCount = 0 }) {
   const [product, setProduct] = useState(null);
   const [selectedColorName, setSelectedColorName] = useState("");
   const [loading, setLoading] = useState(true);
@@ -45,6 +44,7 @@ function Product({ productId, navigate }) {
     return (
       <main className="product-detail">
         <p>{error || "Producto no encontrado."}</p>
+
         <button type="button" onClick={() => navigate("/")}>
           Volver al inicio
         </button>
@@ -56,7 +56,15 @@ function Product({ productId, navigate }) {
     (color) => color.name === selectedColorName
   ) || product.colors?.[0];
 
-  const isAvailable = selectedColor?.available === true;
+  if (!selectedColor) {
+    return (
+      <main className="product-detail">
+        <p>Este producto todavía no tiene variantes registradas.</p>
+      </main>
+    );
+  }
+
+  const isAvailable = selectedColor.available === true;
 
   const formattedPrice = new Intl.NumberFormat("es-CO", {
     style: "currency",
@@ -64,12 +72,8 @@ function Product({ productId, navigate }) {
     maximumFractionDigits: 0,
   }).format(product.price);
 
-  if (!selectedColor) {
-    return (
-      <main className="product-detail">
-        <p>Este producto todavía no tiene variantes registradas.</p>
-      </main>
-    );
+  function handleAddToCart() {
+    onAddToCart(product, selectedColor);
   }
 
   return (
@@ -88,7 +92,7 @@ function Product({ productId, navigate }) {
             <img
               className="product-detail__image"
               src={selectedColor.image}
-              alt={`${product.name} color ${selectedColor.name}`}
+              alt={`Camiseta ${product.name} color ${selectedColor.name}`}
             />
           </div>
 
@@ -118,7 +122,9 @@ function Product({ productId, navigate }) {
                     key={color.name}
                     type="button"
                     className={`product-card__color-button ${
-                      selectedColor.name === color.name ? "is-selected" : ""
+                      selectedColor.name === color.name
+                        ? "is-selected"
+                        : ""
                     }`}
                     onClick={() => setSelectedColorName(color.name)}
                     aria-pressed={selectedColor.name === color.name}
@@ -126,7 +132,9 @@ function Product({ productId, navigate }) {
                     <span
                       className={`product-card__color-swatch product-card__color-swatch--${color.name.toLowerCase()}`}
                     />
+
                     {color.name}
+                    {color.available !== true && " · Agotado"}
                   </button>
                 ))}
               </div>
@@ -139,8 +147,26 @@ function Product({ productId, navigate }) {
               role="status"
             >
               <span className="product-card__availability-dot" />
+
               {isAvailable ? "Disponible" : "Agotado"}
             </div>
+
+            <button
+              className="product-card__button"
+              type="button"
+              disabled={!isAvailable}
+              onClick={handleAddToCart}
+            >
+              {isAvailable ? "Agregar al carrito" : "Producto agotado"}
+            </button>
+
+            <button
+              className="product-detail__back"
+              type="button"
+              onClick={() => navigate("/carrito")}
+            >
+              Ver carrito ({cartCount})
+            </button>
 
             <p className="product-detail__note">
               Ropa que te acompaña todos los días.

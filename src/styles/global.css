@@ -1053,3 +1053,18 @@ a {
     max-width: none;
   }
 }
+.product-card__button:disabled {
+  border-color: #b8afa5;
+  background-color: #b8afa5;
+  color: #fffdfa;
+  cursor: not-allowed;
+  opacity: 0.8;
+  transform: none;
+}
+
+.product-card__button:disabled:hover {
+  border-color: #b8afa5;
+  background-color: #b8afa5;
+  color: #fffdfa;
+  transform: none;
+}
