@@ -313,3 +313,160 @@
     flex-direction: column;
   }
 }
+
+/* SOLICITUDES DE CONTACTO */
+
+.admin-requests {
+  margin-top: 70px;
+  padding-top: 35px;
+  border-top: 1px solid #d8d0c4;
+}
+
+.admin-requests-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.admin-requests-heading .admin-eyebrow {
+  margin-top: 0;
+}
+
+.admin-requests-heading .admin-section-heading {
+  margin-top: 10px;
+}
+
+.admin-request-count {
+  padding: 9px 13px;
+  background: #fffdf9;
+  border: 1px solid #e8e1d7;
+  color: #777067;
+  font-size: 12px;
+}
+
+.admin-request-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.admin-request {
+  padding: 24px;
+  background: #fffdf9;
+  border: 1px solid #e8e1d7;
+}
+
+.admin-request-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #eee8df;
+}
+
+.admin-request-top h3 {
+  margin: 12px 0 5px;
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.admin-request-subject {
+  margin: 0;
+  color: #777067;
+  font-size: 13px;
+}
+
+.admin-request-date {
+  color: #898176;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.admin-request-contact {
+  margin: 18px 0;
+}
+
+.admin-request-contact p {
+  margin: 7px 0;
+  color: #777067;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.admin-request-contact strong {
+  color: #29251f;
+}
+
+.admin-request-message {
+  padding: 16px;
+  background: #f8f5ef;
+  color: #51483e;
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.admin-status.is-pending {
+  color: #947343;
+}
+
+.admin-status.is-pending .admin-status-dot {
+  background: #c49a57;
+}
+
+.admin-request-button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 13px 16px;
+  border: 1px solid #29251f;
+  background: #29251f;
+  color: #fffdf9;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, opacity 0.25s ease;
+}
+
+.admin-request-button:hover:not(:disabled) {
+  background: #51483e;
+}
+
+.admin-request-button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.admin-empty-requests,
+.admin-request-error {
+  padding: 20px;
+  background: #fffdf9;
+  color: #777067;
+  font-size: 13px;
+}
+
+.admin-request-error {
+  color: #a32626;
+}
+
+.admin-request-button:focus-visible {
+  outline: 2px solid #81776c;
+  outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+  .admin-request-list {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-requests-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

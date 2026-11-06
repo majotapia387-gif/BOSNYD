@@ -11,9 +11,13 @@ const formatPrice = (price) =>
 
 function Admin({ onLogout }) {
   const [products, setProducts] = useState([]);
+  const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingRequests, setLoadingRequests] = useState(true);
   const [error, setError] = useState("");
+  const [requestError, setRequestError] = useState("");
   const [updating, setUpdating] = useState(null);
+  const [updatingRequest, setUpdatingRequest] = useState(null);
 
   useEffect(() => {
     document.title = "Administración | BOSNYD";
@@ -42,7 +46,24 @@ function Admin({ onLogout }) {
       setLoading(false);
     }
 
+    async function loadRequests() {
+      const { data, error } = await supabase
+        .from("contact_requests")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error al cargar solicitudes:", error.message);
+        setRequestError("No pudimos cargar las solicitudes de contacto.");
+      } else {
+        setRequests(data || []);
+      }
+
+      setLoadingRequests(false);
+    }
+
     loadProducts();
+    loadRequests();
 
     return () => {
       document.title = "BOSNYD";
@@ -69,14 +90,9 @@ function Admin({ onLogout }) {
       .single();
 
     if (error) {
-      console.error(
-        "Error al actualizar disponibilidad:",
-        error.message
-      );
+      console.error("Error al actualizar disponibilidad:", error.message);
       setError("No se pudo actualizar la disponibilidad.");
     } else {
-      console.log("Disponibilidad guardada en Supabase:", data);
-
       const savedColors = (data.colors || []).map((color) => ({
         ...color,
         available: color.available === true,
@@ -94,6 +110,31 @@ function Admin({ onLogout }) {
     setUpdating(null);
   }
 
+  async function markRequestAsAttended(request) {
+    setUpdatingRequest(request.id);
+    setRequestError("");
+
+    const { error } = await supabase
+      .from("contact_requests")
+      .update({ status: "Atendida" })
+      .eq("id", request.id);
+
+    if (error) {
+      console.error("Error al actualizar solicitud:", error.message);
+      setRequestError("No se pudo actualizar el estado de la solicitud.");
+    } else {
+      setRequests((previousRequests) =>
+        previousRequests.map((item) =>
+          item.id === request.id
+            ? { ...item, status: "Atendida" }
+            : item
+        )
+      );
+    }
+
+    setUpdatingRequest(null);
+  }
+
   const totalVariants = products.reduce(
     (total, product) => total + (product.colors?.length || 0),
     0
@@ -107,6 +148,10 @@ function Admin({ onLogout }) {
       ).length,
     0
   );
+
+  const pendingRequests = requests.filter(
+    (request) => request.status === "Pendiente"
+  ).length;
 
   return (
     <div className="admin-page">
@@ -130,7 +175,8 @@ function Admin({ onLogout }) {
         <h1>Panel de administración</h1>
 
         <p className="admin-description">
-          Gestiona los productos y la disponibilidad de la colección ORIGEN.
+          Gestiona los productos, la disponibilidad y las solicitudes
+          de contacto de BOSNYD.
         </p>
 
         <section className="admin-stats">
@@ -147,6 +193,11 @@ function Admin({ onLogout }) {
           <article className="admin-stat">
             <p>Disponibles</p>
             <strong>{availableVariants}</strong>
+          </article>
+
+          <article className="admin-stat">
+            <p>Solicitudes pendientes</p>
+            <strong>{pendingRequests}</strong>
           </article>
         </section>
 
@@ -182,7 +233,6 @@ function Admin({ onLogout }) {
                 <div className="admin-variants">
                   {product.colors?.map((color, index) => {
                     const isAvailable = color.available === true;
-
                     const isUpdating =
                       updating === `${product.id}-${index}`;
 
@@ -228,6 +278,98 @@ function Admin({ onLogout }) {
               </div>
             </article>
           ))}
+        </section>
+
+        <section className="admin-requests">
+          <div className="admin-requests-heading">
+            <div>
+              <p className="admin-eyebrow">MENSAJES DE CLIENTES</p>
+              <h2 className="admin-section-heading">
+                Solicitudes de contacto
+              </h2>
+            </div>
+
+            <span className="admin-request-count">
+              {requests.length} recibidas
+            </span>
+          </div>
+
+          {loadingRequests && <p>Cargando solicitudes...</p>}
+
+          {requestError && (
+            <p className="admin-request-error" role="alert">
+              {requestError}
+            </p>
+          )}
+
+          {!loadingRequests &&
+            !requestError &&
+            requests.length === 0 && (
+              <p className="admin-empty-requests">
+                Todavía no hay solicitudes de contacto.
+              </p>
+            )}
+
+          <div className="admin-request-list">
+            {requests.map((request) => (
+              <article className="admin-request" key={request.id}>
+                <div className="admin-request-top">
+                  <div>
+                    <span
+                      className={`admin-status ${
+                        request.status === "Atendida"
+                          ? "is-available"
+                          : "is-pending"
+                      }`}
+                    >
+                      <span className="admin-status-dot"></span>
+                      {request.status || "Pendiente"}
+                    </span>
+
+                    <h3>{request.full_name}</h3>
+                    <p className="admin-request-subject">
+                      {request.subject}
+                    </p>
+                  </div>
+
+                  <span className="admin-request-date">
+                    {new Date(request.created_at).toLocaleDateString(
+                      "es-CO"
+                    )}
+                  </span>
+                </div>
+
+                <div className="admin-request-contact">
+                  <p>
+                    <strong>Correo:</strong> {request.email}
+                  </p>
+
+                  {request.phone && (
+                    <p>
+                      <strong>Teléfono:</strong> {request.phone}
+                    </p>
+                  )}
+                </div>
+
+                <p className="admin-request-message">
+                  {request.message}
+                </p>
+
+                {request.status !== "Atendida" && (
+                  <button
+                    className="admin-request-button"
+                    type="button"
+                    disabled={updatingRequest === request.id}
+                    onClick={() => markRequestAsAttended(request)}
+                  >
+                    {updatingRequest === request.id
+                      ? "Guardando..."
+                      : "Marcar como atendida"}
+                  </button>
+                )}
+              </article>
+            ))}
+          </div>
         </section>
       </main>
     </div>
