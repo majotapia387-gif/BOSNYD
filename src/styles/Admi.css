@@ -470,3 +470,69 @@
     flex-direction: column;
   }
 }
+
+/* PEDIDOS */
+
+.admin-orders {
+  margin-top: 70px;
+}
+
+.admin-order-items {
+  margin-top: 22px;
+}
+
+.admin-order-items h4 {
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid #e8e1d7;
+}
+
+.admin-order-item strong {
+  font-size: 14px;
+}
+
+.admin-order-item p {
+  margin-top: 5px;
+  color: #777067;
+  font-size: 13px;
+}
+
+.admin-order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #d9d0c4;
+}
+
+.admin-order-total span {
+  color: #777067;
+  font-size: 13px;
+}
+
+.admin-order-total strong {
+  font-size: 18px;
+}
+
+@media (max-width: 600px) {
+  .admin-order-item {
+    gap: 12px;
+  }
+
+  .admin-order-total strong {
+    font-size: 16px;
+  }
+}

@@ -1,4 +1,6 @@
 
+import { useState } from "react";
+import { supabase } from "../lib/supabaseClient";
 import "../styles/Cart.css";
 
 const WHATSAPP_NUMBER = "573002248841";
@@ -12,6 +14,9 @@ function formatPrice(price) {
 }
 
 function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
+  const [savingOrder, setSavingOrder] = useState(false);
+  const [orderError, setOrderError] = useState("");
+
   const totalItems = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
@@ -22,27 +27,71 @@ function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
     0
   );
 
-  function handleWhatsAppOrder() {
-    const productDetails = cartItems
-      .map(
-        (item) =>
-          `• ${item.name}\n` +
-          `  Color: ${item.colorName}\n` +
-          `  Cantidad: ${item.quantity}\n` +
-          `  Precio: ${formatPrice(item.price)}\n` +
-          `  Subtotal: ${formatPrice(item.price * item.quantity)}`
-      )
-      .join("\n\n");
+  async function handleWhatsAppOrder() {
+    if (cartItems.length === 0 || savingOrder) return;
 
-    const message =
-      `¡Hola, BOSNYD! Quiero realizar una solicitud de pedido:\n\n` +
-      `${productDetails}\n\n` +
-      `TOTAL: ${formatPrice(totalPrice)}\n\n` +
-      `Quisiera confirmar la disponibilidad y los detalles de entrega. ¡Gracias!`;
+    setSavingOrder(true);
+    setOrderError("");
 
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    const orderItems = cartItems.map((item) => ({
+      product_id: item.productId,
+      name: item.name,
+      collection: item.collection,
+      color: item.colorName,
+      image: item.image,
+      price: item.price,
+      quantity: item.quantity,
+      subtotal: item.price * item.quantity,
+    }));
 
-    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    try {
+      const { error } = await supabase
+        .from("orders")
+        .insert([
+          {
+            items: orderItems,
+            total: totalPrice,
+            status: "Pendiente",
+          },
+        ]);
+
+      if (error) {
+        console.error("Error al guardar el pedido:", error.message);
+        setOrderError(
+          "No pudimos registrar tu solicitud. Inténtalo nuevamente."
+        );
+        return;
+      }
+
+      const productDetails = cartItems
+        .map(
+          (item) =>
+            `• ${item.name}\n` +
+            `  Color: ${item.colorName}\n` +
+            `  Cantidad: ${item.quantity}\n` +
+            `  Precio: ${formatPrice(item.price)}\n` +
+            `  Subtotal: ${formatPrice(item.price * item.quantity)}`
+        )
+        .join("\n\n");
+
+      const message =
+        `¡Hola, BOSNYD! Quiero realizar una solicitud de pedido:\n\n` +
+        `${productDetails}\n\n` +
+        `TOTAL: ${formatPrice(totalPrice)}\n\n` +
+        `Quisiera confirmar la disponibilidad y los detalles de entrega. ¡Gracias!`;
+
+      const whatsappUrl =
+        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    } catch (error) {
+      console.error("Error inesperado al registrar el pedido:", error);
+      setOrderError(
+        "Ocurrió un problema al registrar tu solicitud. Inténtalo nuevamente."
+      );
+    } finally {
+      setSavingOrder(false);
+    }
   }
 
   return (
@@ -71,7 +120,10 @@ function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
           </section>
         ) : (
           <div className="cart-layout">
-            <section className="cart-products" aria-label="Productos seleccionados">
+            <section
+              className="cart-products"
+              aria-label="Productos seleccionados"
+            >
               <p className="cart-products__count">
                 {totalItems} {totalItems === 1 ? "producto" : "productos"}
               </p>
@@ -169,21 +221,32 @@ function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
               </div>
 
               <p className="cart-summary__note">
-                El pedido se confirmará directamente con BOSNYD por WhatsApp.
-                Los detalles de envío y pago se acordarán por ese medio.
+                El pedido se registrará y se enviará como solicitud a BOSNYD
+                por WhatsApp. Los detalles de envío y pago se acordarán por
+                ese medio.
               </p>
+
+              {orderError && (
+                <p className="cart-order-error" role="alert">
+                  {orderError}
+                </p>
+              )}
 
               <button
                 className="cart-button cart-button--full"
                 type="button"
+                disabled={savingOrder}
                 onClick={handleWhatsAppOrder}
               >
-                Enviar solicitud por WhatsApp
+                {savingOrder
+                  ? "Registrando solicitud..."
+                  : "Enviar solicitud por WhatsApp"}
               </button>
 
               <button
                 className="cart-continue"
                 type="button"
+                disabled={savingOrder}
                 onClick={() => navigate("/")}
               >
                 ← Seguir explorando

@@ -9,15 +9,28 @@ const formatPrice = (price) =>
     maximumFractionDigits: 0,
   }).format(price);
 
+const formatDate = (date) =>
+  new Date(date).toLocaleString("es-CO", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+
 function Admin({ onLogout }) {
   const [products, setProducts] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [orders, setOrders] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [loadingRequests, setLoadingRequests] = useState(true);
+  const [loadingOrders, setLoadingOrders] = useState(true);
+
   const [error, setError] = useState("");
   const [requestError, setRequestError] = useState("");
+  const [orderError, setOrderError] = useState("");
+
   const [updating, setUpdating] = useState(null);
   const [updatingRequest, setUpdatingRequest] = useState(null);
+  const [updatingOrder, setUpdatingOrder] = useState(null);
 
   useEffect(() => {
     document.title = "Administración | BOSNYD";
@@ -62,8 +75,25 @@ function Admin({ onLogout }) {
       setLoadingRequests(false);
     }
 
+    async function loadOrders() {
+      const { data, error } = await supabase
+        .from("orders")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error al cargar pedidos:", error.message);
+        setOrderError("No pudimos cargar los pedidos.");
+      } else {
+        setOrders(data || []);
+      }
+
+      setLoadingOrders(false);
+    }
+
     loadProducts();
     loadRequests();
+    loadOrders();
 
     return () => {
       document.title = "BOSNYD";
@@ -135,6 +165,31 @@ function Admin({ onLogout }) {
     setUpdatingRequest(null);
   }
 
+  async function markOrderAsAttended(order) {
+    setUpdatingOrder(order.id);
+    setOrderError("");
+
+    const { error } = await supabase
+      .from("orders")
+      .update({ status: "Atendido" })
+      .eq("id", order.id);
+
+    if (error) {
+      console.error("Error al actualizar pedido:", error.message);
+      setOrderError("No se pudo actualizar el estado del pedido.");
+    } else {
+      setOrders((previousOrders) =>
+        previousOrders.map((item) =>
+          item.id === order.id
+            ? { ...item, status: "Atendido" }
+            : item
+        )
+      );
+    }
+
+    setUpdatingOrder(null);
+  }
+
   const totalVariants = products.reduce(
     (total, product) => total + (product.colors?.length || 0),
     0
@@ -151,6 +206,10 @@ function Admin({ onLogout }) {
 
   const pendingRequests = requests.filter(
     (request) => request.status === "Pendiente"
+  ).length;
+
+  const pendingOrders = orders.filter(
+    (order) => order.status === "Pendiente"
   ).length;
 
   return (
@@ -175,8 +234,8 @@ function Admin({ onLogout }) {
         <h1>Panel de administración</h1>
 
         <p className="admin-description">
-          Gestiona los productos, la disponibilidad y las solicitudes
-          de contacto de BOSNYD.
+          Gestiona los productos, la disponibilidad, las solicitudes
+          de contacto y los pedidos de BOSNYD.
         </p>
 
         <section className="admin-stats">
@@ -198,6 +257,11 @@ function Admin({ onLogout }) {
           <article className="admin-stat">
             <p>Solicitudes pendientes</p>
             <strong>{pendingRequests}</strong>
+          </article>
+
+          <article className="admin-stat">
+            <p>Pedidos pendientes</p>
+            <strong>{pendingOrders}</strong>
           </article>
         </section>
 
@@ -333,9 +397,7 @@ function Admin({ onLogout }) {
                   </div>
 
                   <span className="admin-request-date">
-                    {new Date(request.created_at).toLocaleDateString(
-                      "es-CO"
-                    )}
+                    {formatDate(request.created_at)}
                   </span>
                 </div>
 
@@ -365,6 +427,110 @@ function Admin({ onLogout }) {
                     {updatingRequest === request.id
                       ? "Guardando..."
                       : "Marcar como atendida"}
+                  </button>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="admin-requests admin-orders">
+          <div className="admin-requests-heading">
+            <div>
+              <p className="admin-eyebrow">VENTAS / BOSNYD</p>
+              <h2 className="admin-section-heading">
+                Pedidos recibidos
+              </h2>
+            </div>
+
+            <span className="admin-request-count">
+              {orders.length} registrados
+            </span>
+          </div>
+
+          {loadingOrders && <p>Cargando pedidos...</p>}
+
+          {orderError && (
+            <p className="admin-request-error" role="alert">
+              {orderError}
+            </p>
+          )}
+
+          {!loadingOrders &&
+            !orderError &&
+            orders.length === 0 && (
+              <p className="admin-empty-requests">
+                Todavía no hay pedidos registrados.
+              </p>
+            )}
+
+          <div className="admin-request-list">
+            {orders.map((order) => (
+              <article className="admin-request admin-order" key={order.id}>
+                <div className="admin-request-top">
+                  <div>
+                    <span
+                      className={`admin-status ${
+                        order.status === "Atendido"
+                          ? "is-available"
+                          : "is-pending"
+                      }`}
+                    >
+                      <span className="admin-status-dot"></span>
+                      {order.status || "Pendiente"}
+                    </span>
+
+                    <h3>Pedido #{order.id}</h3>
+                  </div>
+
+                  <span className="admin-request-date">
+                    {formatDate(order.created_at)}
+                  </span>
+                </div>
+
+                <div className="admin-order-items">
+                  <h4>Productos solicitados</h4>
+
+                  {(Array.isArray(order.items) ? order.items : []).map(
+                    (item, index) => (
+                      <div
+                        className="admin-order-item"
+                        key={`${order.id}-${index}`}
+                      >
+                        <div>
+                          <strong>{item.name}</strong>
+                          <p>
+                            Color: {item.colorName || item.color || "No especificado"}
+                          </p>
+                          <p>Cantidad: {item.quantity}</p>
+                        </div>
+
+                        <strong>
+                          {formatPrice(
+                            item.subtotal ??
+                              item.price * item.quantity
+                          )}
+                        </strong>
+                      </div>
+                    )
+                  )}
+                </div>
+
+                <div className="admin-order-total">
+                  <span>Total del pedido</span>
+                  <strong>{formatPrice(order.total)}</strong>
+                </div>
+
+                {order.status !== "Atendido" && (
+                  <button
+                    className="admin-request-button"
+                    type="button"
+                    disabled={updatingOrder === order.id}
+                    onClick={() => markOrderAsAttended(order)}
+                  >
+                    {updatingOrder === order.id
+                      ? "Guardando..."
+                      : "Marcar como atendido"}
                   </button>
                 )}
               </article>
