@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { supabase } from "../lib/supabaseClient";
@@ -19,7 +20,15 @@ function Collection() {
         setError("No pudimos cargar la colección. Inténtalo nuevamente.");
       } else {
         console.log("Productos recibidos desde Supabase:", data);
-        setProducts(data);
+
+        data?.forEach((product) => {
+          console.log(
+            `Disponibilidad de ${product.name}:`,
+            product.colors
+          );
+        });
+
+        setProducts(data || []);
       }
 
       setLoading(false);

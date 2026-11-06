@@ -1,5 +1,6 @@
 
 /* LOGIN */
+
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -98,6 +99,7 @@
 }
 
 /* ADMINISTRACIÓN */
+
 .admin-page {
   min-height: 100vh;
   padding: 28px 5%;
@@ -119,6 +121,12 @@
   border: 1px solid #29251f;
   background: transparent;
   cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+
+.admin-logout:hover {
+  background: #29251f;
+  color: #fffdf9;
 }
 
 .admin-content {
@@ -152,7 +160,12 @@
   margin-top: 45px;
 }
 
+.admin-product {
+  border: 1px solid #e8e1d7;
+}
+
 .admin-product img {
+  display: block;
   width: 100%;
   aspect-ratio: 3 / 4;
   object-fit: cover;
@@ -162,12 +175,117 @@
   margin-bottom: 8px;
 }
 
-.admin-product-description,
-.admin-footnote {
+.admin-product-description {
   color: #777067;
   font-size: 13px;
   line-height: 1.6;
 }
+
+.admin-variants {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.admin-variant {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #e8e1d7;
+  background: #faf8f3;
+}
+
+.admin-variant-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.admin-variant-info > strong {
+  font-size: 13px;
+}
+
+.admin-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+
+.admin-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.admin-status.is-available {
+  color: #526b4d;
+}
+
+.admin-status.is-available .admin-status-dot {
+  background: #78946e;
+}
+
+.admin-status.is-sold-out {
+  color: #81776c;
+}
+
+.admin-status.is-sold-out .admin-status-dot {
+  background: #aaa197;
+}
+
+.admin-availability-button {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #29251f;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.admin-availability-button.button-sold-out {
+  background: #29251f;
+  color: #fffdf9;
+}
+
+.admin-availability-button.button-sold-out:hover:not(:disabled) {
+  background: #51483e;
+  border-color: #51483e;
+}
+
+.admin-availability-button.button-available {
+  background: transparent;
+  color: #29251f;
+}
+
+.admin-availability-button.button-available:hover:not(:disabled) {
+  background: #e9e3d9;
+}
+
+.admin-availability-button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.admin-availability-button:focus-visible,
+.admin-logout:focus-visible {
+  outline: 2px solid #81776c;
+  outline-offset: 3px;
+}
+
+/* ADAPTACIÓN A PANTALLAS PEQUEÑAS */
 
 @media (max-width: 700px) {
   .login-card {
@@ -188,5 +306,10 @@
   .admin-stats,
   .admin-product-grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-variant-info {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

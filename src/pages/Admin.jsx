@@ -28,7 +28,15 @@ function Admin({ onLogout }) {
         console.error("Error al cargar productos:", error.message);
         setError("No pudimos cargar los productos.");
       } else {
-        setProducts(data || []);
+        const normalizedProducts = (data || []).map((product) => ({
+          ...product,
+          colors: (product.colors || []).map((color) => ({
+            ...color,
+            available: color.available === true,
+          })),
+        }));
+
+        setProducts(normalizedProducts);
       }
 
       setLoading(false);
@@ -42,28 +50,42 @@ function Admin({ onLogout }) {
   }, []);
 
   async function toggleAvailability(product, colorIndex) {
-    const updatedColors = product.colors.map((color, index) =>
-      index === colorIndex
-        ? { ...color, available: !color.available }
-        : color
-    );
+    const updatedColors = product.colors.map((color, index) => ({
+      ...color,
+      available:
+        index === colorIndex
+          ? color.available !== true
+          : color.available === true,
+    }));
 
     setUpdating(`${product.id}-${colorIndex}`);
     setError("");
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("products")
       .update({ colors: updatedColors })
-      .eq("id", product.id);
+      .eq("id", product.id)
+      .select("id, colors")
+      .single();
 
     if (error) {
-      console.error("Error al actualizar disponibilidad:", error.message);
+      console.error(
+        "Error al actualizar disponibilidad:",
+        error.message
+      );
       setError("No se pudo actualizar la disponibilidad.");
     } else {
+      console.log("Disponibilidad guardada en Supabase:", data);
+
+      const savedColors = (data.colors || []).map((color) => ({
+        ...color,
+        available: color.available === true,
+      }));
+
       setProducts((previousProducts) =>
         previousProducts.map((item) =>
           item.id === product.id
-            ? { ...item, colors: updatedColors }
+            ? { ...item, colors: savedColors }
             : item
         )
       );
@@ -80,7 +102,9 @@ function Admin({ onLogout }) {
   const availableVariants = products.reduce(
     (total, product) =>
       total +
-      (product.colors || []).filter((color) => color.available === true).length,
+      (product.colors || []).filter(
+        (color) => color.available === true
+      ).length,
     0
   );
 
@@ -158,20 +182,33 @@ function Admin({ onLogout }) {
                 <div className="admin-variants">
                   {product.colors?.map((color, index) => {
                     const isAvailable = color.available === true;
+
                     const isUpdating =
                       updating === `${product.id}-${index}`;
 
                     return (
                       <div className="admin-variant" key={index}>
-                        <div>
+                        <div className="admin-variant-info">
                           <strong>{color.name}</strong>
 
-                          <p>
+                          <span
+                            className={`admin-status ${
+                              isAvailable
+                                ? "is-available"
+                                : "is-sold-out"
+                            }`}
+                          >
+                            <span className="admin-status-dot"></span>
                             {isAvailable ? "Disponible" : "Agotado"}
-                          </p>
+                          </span>
                         </div>
 
                         <button
+                          className={`admin-availability-button ${
+                            isAvailable
+                              ? "button-sold-out"
+                              : "button-available"
+                          }`}
                           type="button"
                           disabled={updating !== null}
                           onClick={() =>

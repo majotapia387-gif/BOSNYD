@@ -1,12 +1,13 @@
-
 import { useState } from "react";
+import { supabase } from "../lib/supabaseClient";
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     setError("");
 
@@ -15,7 +16,22 @@ function Login({ onLogin }) {
       return;
     }
 
-    onLogin(email.trim(), password);
+    setLoading(true);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      setError("No se pudo iniciar sesión. Revisa tus datos.");
+      console.error("Error de inicio de sesión:", error.message);
+      return;
+    }
+
+    onLogin();
   }
 
   return (
@@ -36,7 +52,7 @@ function Login({ onLogin }) {
           <input
             id="login-email"
             type="email"
-            placeholder="admin@bosnyd.com"
+            placeholder="Tu correo de administrador"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="username"
@@ -54,20 +70,24 @@ function Login({ onLogin }) {
             required
           />
 
-          {error && <p className="login-error" role="alert">{error}</p>}
+          {error && (
+            <p className="login-error" role="alert">
+              {error}
+            </p>
+          )}
 
-          <button className="login-submit" type="submit">
-            INICIAR SESIÓN ↗
+          <button
+            className="login-submit"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "VERIFICANDO..." : "INICIAR SESIÓN ↗"}
           </button>
         </form>
 
         <a className="login-back" href="/">
           ← Volver a la tienda
         </a>
-
-        <p className="login-note">
-          Acceso de demostración académica.
-        </p>
       </section>
     </main>
   );

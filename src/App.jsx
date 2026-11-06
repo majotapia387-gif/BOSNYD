@@ -1,6 +1,6 @@
-
 import { useEffect, useState } from "react";
 
+import { supabase } from "./lib/supabaseClient";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Collection from "./pages/Collection";
@@ -16,7 +16,8 @@ import "./styles/admi.css";
 
 function App() {
   const [path, setPath] = useState(window.location.pathname);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [session, setSession] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   const [cartItems, setCartItems] = useState(() => {
     try {
@@ -31,6 +32,37 @@ function App() {
     (total, item) => total + item.quantity,
     0
   );
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadSession() {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (!mounted) return;
+
+      if (error) {
+        console.error("Error al comprobar la sesión:", error.message);
+      }
+
+      setSession(data?.session ?? null);
+      setAuthLoading(false);
+    }
+
+    loadSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+      setAuthLoading(false);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     function handlePopState() {
@@ -54,20 +86,19 @@ function App() {
     window.scrollTo(0, 0);
   }
 
-  function handleLogin(email, password) {
-    if (
-      email === "admin@bosnyd.com" &&
-      password === "Bosnyd2026!"
-    ) {
-      setIsAuthenticated(true);
-      navigate("/admin");
-    } else {
-      alert("Correo o contraseña incorrectos. Revisa los datos de prueba.");
-    }
+  function handleLogin() {
+    navigate("/admin");
   }
 
-  function handleLogout() {
-    setIsAuthenticated(false);
+  async function handleLogout() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.error("Error al cerrar sesión:", error.message);
+      alert("No se pudo cerrar la sesión. Inténtalo nuevamente.");
+      return;
+    }
+
     navigate("/login");
   }
 
@@ -137,11 +168,23 @@ function App() {
   }
 
   if (path === "/login") {
+    if (authLoading) {
+      return <main className="login-page">Comprobando sesión...</main>;
+    }
+
+    if (session) {
+      return <Admin onLogout={handleLogout} />;
+    }
+
     return <Login onLogin={handleLogin} />;
   }
 
   if (path === "/admin") {
-    if (!isAuthenticated) {
+    if (authLoading) {
+      return <main className="login-page">Comprobando sesión...</main>;
+    }
+
+    if (!session) {
       return <Login onLogin={handleLogin} />;
     }
 
