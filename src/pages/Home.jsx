@@ -1,31 +1,38 @@
-import "../styles/Home.css";
+
+import "../styles/home.css";
 
 function Home() {
   return (
     <div className="home">
       {/* PORTADA PRINCIPAL */}
       <section className="hero" id="inicio">
-        <div className="hero__image" aria-hidden="true" />
-        <div className="hero__overlay" />
+        <div className="hero__background" />
+
+        <div className="hero__brand-name" aria-hidden="true">
+          BOSNYD
+        </div>
+
+        <div className="hero__image">
+          <img
+            src="/images/modelo-bosnyd-marfil.jpeg.png"
+            alt="Modelo vistiendo una camiseta BOSNYD de la colección ORIGEN"
+          />
+        </div>
+
+        <div className="hero__top">
+          <p className="hero__eyebrow">
+            BOSNYD® — COLECCIÓN ORIGEN
+          </p>
+          <span className="hero__edition">EST. 2026</span>
+        </div>
 
         <div className="hero__content">
-          <p className="hero__eyebrow">
-            BOSNYD — COLECCIÓN ORIGEN
-          </p>
-
-          <h1>
-            Viste tu
-            <br />
-            <span>identidad.</span>
-          </h1>
-
           <p className="hero__tagline">
             Hecho para destacar en el día a día.
           </p>
 
           <p className="hero__description">
             Camisetas oversize premium.
-            <br />
             Diseñadas para expresar quién eres.
           </p>
 
@@ -105,25 +112,25 @@ function Home() {
       </section>
 
       {/* PRESENTACIÓN DE CONTACTO */}
-<section className="home-contact" id="contacto">
-  <div className="home-contact__content">
-    <p className="home-contact__eyebrow">
-      ESTAMOS PARA ESCUCHARTE
-    </p>
+      <section className="home-contact" id="contacto">
+        <div className="home-contact__content">
+          <p className="home-contact__eyebrow">
+            ESTAMOS PARA ESCUCHARTE
+          </p>
 
-    <h2>
-      Hablemos<span>.</span>
-    </h2>
+          <h2>
+            Hablemos<span>.</span>
+          </h2>
 
-    <p>
-      ¿Tienes preguntas sobre nuestras prendas?
-      Nos encantará conocer lo que tienes en mente.
-    </p>
-  </div>
+          <p>
+            ¿Tienes preguntas sobre nuestras prendas?
+            Nos encantará conocer lo que tienes en mente.
+          </p>
+        </div>
 
-  <a className="home-contact__button" href="#contact-form">
-    CONTÁCTANOS <span aria-hidden="true">↗</span>
-  </a>
+        <a className="home-contact__button" href="#contact-form">
+          CONTÁCTANOS <span aria-hidden="true">↗</span>
+        </a>
       </section>
     </div>
   );
