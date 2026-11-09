@@ -30,12 +30,13 @@ function Navbar({ cartCount = 0, navigate }) {
           BOSNYD<span>®</span>
         </a>
 
-        <nav className="navbar__links" aria-label="Navegación principal">
-          <a href="#inicio">Inicio</a>
-          <a href="#collection">Colección</a>
-          <a href="#about">Nosotras</a>
-          <a href="#contact-form">Contacto</a>
-        </nav>
+       <nav className="navbar__links" aria-label="Navegación principal">
+  <a href="#inicio">Inicio</a>
+  <a href="#collection">Colección</a>
+  <a href="#style-finder">Encuentra tu estilo</a>
+  <a href="#about">Nosotras</a>
+  <a href="#contact-form">Contacto</a>
+</nav>
 
         <a
           href="/carrito"
