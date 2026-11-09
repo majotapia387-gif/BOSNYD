@@ -1,4 +1,3 @@
-
 function Footer() {
   return (
     <footer className="footer">
@@ -34,10 +33,10 @@ function Footer() {
         </p>
 
         <p>Barranquilla, Colombia.</p>
-      </div>
 
-      <div className="footer__admin">
-        <a href="/login">Acceso administrador</a>
+        <a className="footer__admin" href="/login">
+          Acceso administrador ↗
+        </a>
       </div>
     </footer>
   );

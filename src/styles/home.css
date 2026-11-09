@@ -33,7 +33,7 @@
   min-height: min(790px, calc(100svh - 108px));
   margin: 0 20px;
 
-  padding: 30px 5% 28px;
+  padding: 120px 5% 90px;
 
   overflow: hidden;
   border-radius: 0 0 28px 28px;
@@ -147,7 +147,7 @@
 
   width: min(100%, 420px);
   margin-top: auto;
-  padding-top: 430px;
+  padding-top: 0;
 
   animation: contentReveal 0.9s 0.15s ease-out both;
 }
@@ -233,6 +233,7 @@
 
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 20px;
 
   color: rgba(243, 239, 230, 0.65);
@@ -240,14 +241,16 @@
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 1.6px;
+
+  pointer-events: none;
 }
 
 /* ========================================
-   2. INTRODUCCIÓN DE MARCA
+   2. NUESTRA ESENCIA
 ======================================== */
 
 .collection-intro {
-  padding: 105px max(7%, calc((100% - 1200px) / 2)) 115px;
+  padding: 100px max(7%, calc((100% - 1200px) / 2)) 110px;
   background: var(--color-bosnyd-ivory);
 }
 
@@ -257,75 +260,212 @@
   gap: 20px;
 
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(43, 27, 23, 0.2);
+  border-bottom: 1px solid rgba(33, 31, 29, 0.2);
 
-  color: #77645a;
+  color: var(--color-bosnyd-gray);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 1.8px;
 }
 
-.collection-intro__content {
+.collection-intro__main {
   display: grid;
-  grid-template-columns: 1.4fr 0.6fr;
-  align-items: end;
-  gap: 70px;
+  grid-template-columns: 0.95fr 1.05fr;
+  align-items: center;
+  gap: clamp(45px, 8vw, 110px);
 
-  padding-top: 54px;
+  max-width: 1050px;
+  margin: 65px auto 0;
 }
 
-.collection-intro h2 {
-  margin: 0;
+/* Imagen central */
 
+.collection-intro__image {
+  position: relative;
+  height: 540px;
+  overflow: hidden;
+  background: #d8d1c8;
+}
+
+.collection-intro__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.collection-intro__image:hover img {
+  transform: scale(1.035);
+}
+
+.collection-intro__image-label,
+.collection-intro__image-number {
+  position: absolute;
+  bottom: 18px;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.collection-intro__image-label {
+  left: 20px;
+}
+
+.collection-intro__image-number {
+  right: 20px;
+}
+
+/* Texto editorial */
+
+.collection-intro__text {
+  max-width: 510px;
+}
+
+.collection-intro__eyebrow {
+  margin-bottom: 22px;
+  color: var(--color-bosnyd-gray);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.2px;
+}
+
+.collection-intro__text h2 {
+  margin: 0;
   font-family: var(--font-title);
-  font-size: clamp(38px, 5.2vw, 70px);
+  font-size: clamp(40px, 4.5vw, 62px);
   font-weight: 400;
   letter-spacing: -2px;
   line-height: 1.08;
 }
 
-.collection-intro h2 span {
-  color: #8b6d5d;
+.collection-intro__text h2 span {
+  color: var(--color-bosnyd-brown);
   font-style: italic;
 }
 
-.collection-intro__description p {
-  margin: 0;
-
-  color: #65534a;
-  font-size: 14px;
-  line-height: 1.95;
+.collection-intro__description {
+  max-width: 420px;
+  margin: 22px 0 28px;
+  color: var(--color-bosnyd-gray);
+  font-size: 13px;
+  line-height: 1.9;
 }
 
-.collection-intro__description a {
+/* Valores interactivos */
+
+.collection-intro__values {
+  border-top: 1px solid var(--color-bosnyd-greige);
+}
+
+.collection-intro__value {
+  display: grid;
+  grid-template-columns: 45px 1fr 25px;
+  align-items: center;
+  width: 100%;
+  min-height: 53px;
+  padding: 0 5px;
+
+  border: 0;
+  border-bottom: 1px solid var(--color-bosnyd-greige);
+  background: transparent;
+  color: var(--color-bosnyd-gray);
+
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.25s ease, padding 0.25s ease;
+}
+
+.collection-intro__value span:first-child {
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.collection-intro__value span:nth-child(2) {
+  font-family: var(--font-title);
+  font-size: 19px;
+}
+
+.collection-intro__value span:last-child {
+  font-size: 19px;
+  text-align: center;
+}
+
+.collection-intro__value:hover,
+.collection-intro__value.is-active {
+  padding-left: 12px;
+  color: var(--color-bosnyd-dark);
+}
+
+.collection-intro__value.is-active span:nth-child(2) {
+  color: var(--color-bosnyd-brown);
+  font-style: italic;
+}
+
+/* Texto que cambia al seleccionar un valor */
+
+.collection-intro__detail {
+  display: grid;
+  grid-template-columns: 35px 1fr;
+  gap: 12px;
+  min-height: 85px;
+  padding-top: 20px;
+
+  animation: essenceReveal 0.35s ease both;
+}
+
+.collection-intro__detail > span {
+  color: var(--color-bosnyd-brown);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.collection-intro__detail p {
+  max-width: 390px;
+  margin: 0;
+  color: var(--color-bosnyd-gray);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.collection-intro__text > a {
   display: inline-flex;
   align-items: center;
   gap: 18px;
-
-  margin-top: 27px;
+  margin-top: 20px;
   padding-bottom: 8px;
 
-  border-bottom: 1px solid #6f5142;
-
+  border-bottom: 1px solid var(--color-bosnyd-brown);
   color: var(--color-bosnyd-dark);
+
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1.4px;
   text-decoration: none;
 
-  transition: color 0.2s ease, gap 0.2s ease;
+  transition: gap 0.25s ease, color 0.25s ease;
 }
 
-.collection-intro__description a span {
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.collection-intro__description a:hover {
+.collection-intro__text > a:hover {
   gap: 25px;
-  color: #8b6d5d;
+  color: var(--color-bosnyd-brown);
 }
 
+/* Animación del texto */
+
+@keyframes essenceReveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* ========================================
    3. HISTORIA DE BOSNYD
 ======================================== */
@@ -338,42 +478,158 @@
   background: #e8e0d4;
 }
 
+/* Área visual del carrusel */
+
 .about__visual {
   position: relative;
 
-  display: flex;
-  align-items: flex-end;
-
   min-height: 560px;
   overflow: hidden;
+  border-radius: 14px;
 
   background-color: #594237;
-
-  background-image:
-    linear-gradient(
-      0deg,
-      rgba(35, 22, 18, 0.66),
-      transparent 38%
-    ),
-    url("/images/bosnyd-historia.jpg.png");
-
-  background-position: center;
-  background-size: cover;
 }
 
+/* Contenedor de fotografías */
+
+.about__carousel {
+  position: absolute;
+  inset: 0;
+
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/* Fotografía activa */
+
+.about__carousel-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+  border-radius: inherit;
+
+  animation: historyFade 0.65s ease both;
+}
+
+/* Texto inferior sobre la fotografía */
+
 .about__visual-caption {
+  position: absolute;
+  z-index: 2;
+
+  right: 0;
+  bottom: 0;
+  left: 0;
+
   display: flex;
   justify-content: space-between;
-  width: 100%;
   gap: 15px;
 
   padding: 26px 30px;
+
+  background: linear-gradient(
+    transparent,
+    rgba(35, 22, 18, 0.66)
+  );
 
   color: #f3efe6;
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 1.7px;
+
+  pointer-events: none;
 }
+
+/* Flechas de navegación */
+
+.about__carousel-arrow {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+
+  display: grid;
+  place-items: center;
+
+  width: 42px;
+  height: 42px;
+
+  transform: translateY(-50%);
+
+  border: 1px solid rgba(243, 239, 230, 0.65);
+  border-radius: 50%;
+
+  background: rgba(25, 20, 17, 0.25);
+  color: #fff;
+
+  font-size: 27px;
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.about__carousel-arrow:hover {
+  background: rgba(25, 20, 17, 0.75);
+  border-color: #fff;
+}
+
+.about__carousel-arrow:focus-visible,
+.about__carousel-dot:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+.about__carousel-arrow--prev {
+  left: 22px;
+}
+
+.about__carousel-arrow--next {
+  right: 22px;
+}
+
+/* Indicadores de fotografías */
+
+.about__carousel-indicators {
+  position: absolute;
+  z-index: 3;
+
+  right: 0;
+  bottom: 17px;
+  left: 0;
+
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+}
+
+.about__carousel-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+
+  transition:
+    width 0.25s ease,
+    background 0.25s ease;
+}
+
+.about__carousel-dot.is-active {
+  width: 22px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Texto de historia */
 
 .about__content {
   display: flex;
@@ -427,7 +683,6 @@
   font-size: 20px;
   font-style: italic;
 }
-
 /* ========================================
    4. INVITACIÓN DE CONTACTO
 ======================================== */
@@ -554,6 +809,18 @@
   }
 }
 
+@keyframes historyFade {
+  from {
+    opacity: 0.35;
+    transform: scale(1.015);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* ========================================
    6. TABLET
 ======================================== */
@@ -562,8 +829,7 @@
   .hero {
     min-height: 720px;
     margin: 0 14px;
-    padding-right: 5%;
-    padding-left: 5%;
+    padding: 120px 5% 90px;
   }
 
   .hero__image {
@@ -575,22 +841,21 @@
   }
 
   .hero__content {
-    padding-top: 430px;
+    padding-top: 0;
   }
 
-  .collection-intro {
-    padding: 85px 6%;
-  }
+ .collection-intro {
+  padding: 85px 6%;
+}
 
-  .collection-intro__content {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    padding-top: 40px;
-  }
+.collection-intro__main {
+  gap: 35px;
+  margin-top: 45px;
+}
 
-  .collection-intro__description {
-    max-width: 530px;
-  }
+.collection-intro__image {
+  height: 460px;
+}
 
   .about__visual {
     min-height: 500px;
@@ -618,7 +883,8 @@
     min-height: 720px;
     margin: 0 10px;
 
-    padding: 24px 20px 28px;
+    padding: 140px 20px 28px;
+
     border-radius: 0 0 22px 22px;
   }
 
@@ -654,7 +920,7 @@
   .hero__content {
     width: 100%;
     padding-top: 0;
-    padding-bottom: 55px;
+    padding-bottom: 75px;
   }
 
   .hero__tagline {
@@ -684,43 +950,73 @@
     letter-spacing: 0.8px;
   }
 
-  .collection-intro {
-    padding: 70px 24px 78px;
-  }
+ .collection-intro {
+  padding: 70px 24px 78px;
+}
 
-  .collection-intro__label {
-    font-size: 8px;
-    letter-spacing: 1.1px;
-  }
+.collection-intro__label {
+  font-size: 8px;
+  letter-spacing: 1.1px;
+}
 
-  .collection-intro__content {
-    gap: 25px;
-    padding-top: 34px;
-  }
+.collection-intro__main {
+  grid-template-columns: 1fr;
+  gap: 35px;
+  margin-top: 35px;
+}
 
-  .collection-intro h2 {
-    font-size: clamp(37px, 9.2vw, 52px);
-    letter-spacing: -1.5px;
-    line-height: 1.12;
-  }
+.collection-intro__image {
+  height: 430px;
+}
 
-  .collection-intro__description p {
-    font-size: 13px;
-    line-height: 1.9;
-  }
+.collection-intro__text h2 {
+  font-size: clamp(39px, 10vw, 52px);
+  letter-spacing: -1.5px;
+}
+
+.collection-intro__description {
+  font-size: 13px;
+}
+
+.collection-intro__detail {
+  min-height: 95px;
+}
 
   .about {
     grid-template-columns: 1fr;
   }
 
   .about__visual {
-    min-height: 390px;
-  }
+  min-height: 390px;
+  border-radius: 14px;
+}
+
+.about__carousel-arrow--prev {
+  left: 14px;
+}
+
+.about__carousel-arrow--next {
+  right: 14px;
+}
 
   .about__visual-caption {
     padding: 22px 24px;
     font-size: 8px;
     letter-spacing: 1.2px;
+  }
+
+  .about__carousel-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 23px;
+  }
+
+  .about__carousel-arrow--prev {
+    left: 14px;
+  }
+
+  .about__carousel-arrow--next {
+    right: 14px;
   }
 
   .about__content {
@@ -778,15 +1074,23 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hero__image img,
-  .hero__content {
+  .hero__content,
+  .about__carousel-image {
     animation: none;
+    .collection-intro__image img,
+.collection-intro__detail {
+  animation: none;
+  transition: none;
+}
   }
 
   .hero__button,
   .hero__button span,
   .collection-intro__description a,
   .home-contact__button,
-  .home-contact__button span {
+  .home-contact__button span,
+  .about__carousel-arrow,
+  .about__carousel-dot {
     transition: none;
   }
 

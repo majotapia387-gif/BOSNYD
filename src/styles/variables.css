@@ -1,16 +1,31 @@
+
 :root {
-  --color-bosnyd-dark: #2B1B17;
-  --color-bosnyd-dark-soft: #36221D;
-  --color-bosnyd-ivory: #F3EFE6;
+  /* PALETA EDITORIAL BOSNYD */
+
+  --color-bosnyd-dark: #211F1D;
+  --color-bosnyd-dark-soft: #393633;
+  --color-bosnyd-ivory: #F2F0EC;
   --color-bosnyd-white: #FFFFFF;
   --color-bosnyd-black: #171717;
+
+  /* COLORES COMPLEMENTARIOS */
+
+  --color-bosnyd-gray: #77736F;
+  --color-bosnyd-greige: #D8D1C8;
+  --color-bosnyd-brown: #594237;
   --color-bosnyd-green: #25D366;
+
+  /* TIPOGRAFÍA */
 
   --font-title: Georgia, "Times New Roman", serif;
   --font-body: Arial, Helvetica, sans-serif;
 
+  /* ESTRUCTURA */
+
   --container-width: 1200px;
   --border-radius: 4px;
+
+  /* ESPACIADO */
 
   --space-xs: 8px;
   --space-sm: 16px;
