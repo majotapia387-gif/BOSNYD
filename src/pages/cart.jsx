@@ -38,6 +38,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
       name: item.name,
       collection: item.collection,
       color: item.colorName,
+      size: item.size || "M",
       image: item.image,
       price: item.price,
       quantity: item.quantity,
@@ -68,6 +69,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
           (item) =>
             `• ${item.name}\n` +
             `  Color: ${item.colorName}\n` +
+            `  Talla: ${item.size || "M"}\n` +
             `  Cantidad: ${item.quantity}\n` +
             `  Precio: ${formatPrice(item.price)}\n` +
             `  Subtotal: ${formatPrice(item.price * item.quantity)}`
@@ -131,7 +133,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
               {cartItems.map((item) => (
                 <article
                   className="cart-item"
-                  key={`${item.productId}-${item.colorName}`}
+                  key={`${item.productId}-${item.colorName}-${item.size || "M"}`}
                 >
                   <img
                     className="cart-item__image"
@@ -143,10 +145,17 @@ function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
                     <p className="cart-item__collection">
                       Colección {item.collection}
                     </p>
+
                     <h2>{item.name}</h2>
+
                     <p className="cart-item__color">
                       Color: {item.colorName}
                     </p>
+
+                    <p className="cart-item__color">
+                      Talla: {item.size || "M"}
+                    </p>
+
                     <p className="cart-item__price">
                       {formatPrice(item.price)}
                     </p>
@@ -163,6 +172,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
                             onUpdateQuantity(
                               item.productId,
                               item.colorName,
+                              item.size || "M",
                               item.quantity - 1
                             )
                           }
@@ -179,6 +189,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
                             onUpdateQuantity(
                               item.productId,
                               item.colorName,
+                              item.size || "M",
                               item.quantity + 1
                             )
                           }
@@ -191,7 +202,11 @@ function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
                         className="cart-item__remove"
                         type="button"
                         onClick={() =>
-                          onRemove(item.productId, item.colorName)
+                          onRemove(
+                            item.productId,
+                            item.colorName,
+                            item.size || "M"
+                          )
                         }
                       >
                         Eliminar

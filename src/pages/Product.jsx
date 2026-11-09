@@ -1,9 +1,13 @@
+
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+
+const availableSizes = ["S", "M", "L", "XL", "XXL", "3XL"];
 
 function Product({ productId, navigate, onAddToCart, cartCount = 0 }) {
   const [product, setProduct] = useState(null);
   const [selectedColorName, setSelectedColorName] = useState("");
+  const [selectedSize, setSelectedSize] = useState("M");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -24,6 +28,7 @@ function Product({ productId, navigate, onAddToCart, cartCount = 0 }) {
       } else {
         setProduct(data);
         setSelectedColorName(data.colors?.[0]?.name || "");
+        setSelectedSize("M");
       }
 
       setLoading(false);
@@ -73,7 +78,12 @@ function Product({ productId, navigate, onAddToCart, cartCount = 0 }) {
   }).format(product.price);
 
   function handleAddToCart() {
-    onAddToCart(product, selectedColor);
+    if (!selectedSize) {
+      alert("Selecciona una talla antes de continuar.");
+      return;
+    }
+
+    onAddToCart(product, selectedColor, selectedSize);
   }
 
   return (
@@ -91,7 +101,7 @@ function Product({ productId, navigate, onAddToCart, cartCount = 0 }) {
           <div className="product-detail__gallery">
             <img
               className="product-detail__image"
-              src={selectedColor.image}
+              src={selectedColor.catalog_image || selectedColor.image}
               alt={`Camiseta ${product.name} color ${selectedColor.name}`}
             />
           </div>
@@ -135,6 +145,28 @@ function Product({ productId, navigate, onAddToCart, cartCount = 0 }) {
 
                     {color.name}
                     {color.available !== true && " · Agotado"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="product-detail__sizes">
+              <p>
+                Talla: <strong>{selectedSize}</strong>
+              </p>
+
+              <div className="product-detail__size-options">
+                {availableSizes.map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    className={`product-detail__size-button ${
+                      selectedSize === size ? "is-selected" : ""
+                    }`}
+                    onClick={() => setSelectedSize(size)}
+                    aria-pressed={selectedSize === size}
+                  >
+                    {size}
                   </button>
                 ))}
               </div>

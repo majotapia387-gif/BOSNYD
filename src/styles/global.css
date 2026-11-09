@@ -1277,7 +1277,58 @@ a {
   gap: 10px;
   margin-top: 12px;
 }
+/* SELECTOR DE TALLAS */
 
+.product-detail__sizes {
+  margin-bottom: 28px;
+  color: #75645a;
+  font-size: 12px;
+}
+
+.product-detail__sizes p {
+  margin-bottom: 12px;
+}
+
+.product-detail__sizes strong {
+  color: var(--color-bosnyd-dark);
+  font-weight: 600;
+}
+
+.product-detail__size-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.product-detail__size-button {
+  width: 43px;
+  height: 42px;
+  border: 1px solid rgba(43, 27, 23, 0.2);
+  background: transparent;
+  color: var(--color-bosnyd-dark);
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background-color 0.25s ease,
+              color 0.25s ease,
+              border-color 0.25s ease;
+}
+
+.product-detail__size-button:hover {
+  border-color: var(--color-bosnyd-dark);
+}
+
+.product-detail__size-button--selected {
+  border-color: var(--color-bosnyd-dark);
+  background-color: var(--color-bosnyd-dark);
+  color: var(--color-bosnyd-ivory);
+}
+
+.product-detail__size-button:focus-visible {
+  outline: 2px solid #8b6d5d;
+  outline-offset: 3px;
+}
 .product-detail__note {
   margin-top: 35px;
   padding-top: 20px;
