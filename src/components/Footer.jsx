@@ -1,4 +1,7 @@
+
 function Footer() {
+  const basePath = import.meta.env.BASE_URL;
+
   return (
     <footer className="footer">
       <div className="footer__container">
@@ -34,7 +37,7 @@ function Footer() {
 
         <p>Barranquilla, Colombia.</p>
 
-        <a className="footer__admin" href="/login">
+        <a className="footer__admin" href={`${basePath}login`}>
           Acceso administrador ↗
         </a>
       </div>
