@@ -16,7 +16,19 @@ import Cart from "./pages/cart";
 import "./styles/Admi.css";
 
 function App() {
-  const [path, setPath] = useState(window.location.pathname);
+  // Ruta base: "/" en local y "/BOSNYD/" en GitHub Pages.
+  const BASE_PATH = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+  // Obtiene la ruta sin el prefijo del repositorio.
+  function getCurrentPath() {
+    const currentPath = window.location.pathname;
+
+    return currentPath.startsWith(BASE_PATH)
+      ? currentPath.slice(BASE_PATH.length) || "/"
+      : currentPath;
+  }
+
+  const [path, setPath] = useState(getCurrentPath());
   const [session, setSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -34,6 +46,7 @@ function App() {
     0
   );
 
+  // Comprueba la sesión de Supabase.
   useEffect(() => {
     let mounted = true;
 
@@ -65,9 +78,10 @@ function App() {
     };
   }, []);
 
+  // Actualiza la ruta al usar los botones atrás y adelante del navegador.
   useEffect(() => {
     function handlePopState() {
-      setPath(window.location.pathname);
+      setPath(getCurrentPath());
     }
 
     window.addEventListener("popstate", handlePopState);
@@ -77,12 +91,16 @@ function App() {
     };
   }, []);
 
+  // Guarda el carrito en el almacenamiento local.
   useEffect(() => {
     localStorage.setItem("bosnyd-cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // Navegación compatible con GitHub Pages.
   function navigate(nextPath) {
-    window.history.pushState({}, "", nextPath);
+    const destination = `${BASE_PATH}${nextPath}`;
+
+    window.history.pushState({}, "", destination);
     setPath(nextPath);
     window.scrollTo(0, 0);
   }
@@ -103,6 +121,7 @@ function App() {
     navigate("/login");
   }
 
+  // Agrega productos al carrito.
   function addToCart(product, color, size) {
     if (!color || color.available !== true) {
       alert("Esta variante está agotada.");
@@ -150,6 +169,7 @@ function App() {
     alert(`${product.name} talla ${size} se agregó al carrito.`);
   }
 
+  // Actualiza la cantidad de un producto.
   function updateCartQuantity(productId, colorName, size, quantity) {
     if (quantity < 1) {
       removeFromCart(productId, colorName, size);
@@ -167,6 +187,7 @@ function App() {
     );
   }
 
+  // Elimina un producto del carrito.
   function removeFromCart(productId, colorName, size) {
     setCartItems((previousItems) =>
       previousItems.filter(
@@ -178,6 +199,7 @@ function App() {
     );
   }
 
+  // Página de inicio de sesión.
   if (path === "/login") {
     if (authLoading) {
       return <main className="login-page">Comprobando sesión...</main>;
@@ -190,6 +212,7 @@ function App() {
     return <Login onLogin={handleLogin} />;
   }
 
+  // Panel de administración protegido por sesión.
   if (path === "/admin") {
     if (authLoading) {
       return <main className="login-page">Comprobando sesión...</main>;
@@ -202,38 +225,45 @@ function App() {
     return <Admin onLogout={handleLogout} />;
   }
 
+  // Página del carrito.
   if (path === "/carrito") {
     return (
       <>
         <Navbar cartCount={cartCount} navigate={navigate} />
+
         <Cart
           cartItems={cartItems}
           onUpdateQuantity={updateCartQuantity}
           onRemove={removeFromCart}
           navigate={navigate}
         />
+
         <Footer />
       </>
     );
   }
 
+  // Página de detalle de producto.
   const productMatch = path.match(/^\/producto\/(\d+)$/);
 
   if (productMatch) {
     return (
       <>
         <Navbar cartCount={cartCount} navigate={navigate} />
+
         <Product
           productId={productMatch[1]}
           navigate={navigate}
           onAddToCart={addToCart}
           cartCount={cartCount}
         />
+
         <Footer />
       </>
     );
   }
 
+  // Página principal de BOSNYD.
   return (
     <>
       <Navbar cartCount={cartCount} navigate={navigate} />
