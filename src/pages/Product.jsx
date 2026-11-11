@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { imageUrl } from "../lib/imageUrl";
 
 const availableSizes = ["S", "M", "L", "XL", "XXL", "3XL"];
 
@@ -101,7 +102,9 @@ function Product({ productId, navigate, onAddToCart, cartCount = 0 }) {
           <div className="product-detail__gallery">
             <img
               className="product-detail__image"
-              src={selectedColor.catalog_image || selectedColor.image}
+              src={imageUrl(
+                selectedColor.catalog_image || selectedColor.image
+              )}
               alt={`Camiseta ${product.name} color ${selectedColor.name}`}
             />
           </div>

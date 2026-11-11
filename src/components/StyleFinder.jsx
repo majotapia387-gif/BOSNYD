@@ -1,6 +1,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { imageUrl } from "../lib/imageUrl";
 import "../styles/StyleFinder.css";
 
 const preferences = {
@@ -36,7 +37,7 @@ const currency = new Intl.NumberFormat("es-CO", {
   maximumFractionDigits: 0,
 });
 
-function StyleFinder() {
+function StyleFinder({ navigate }) {
   const [style, setStyle] = useState("minimalista");
   const [color, setColor] = useState("Marfil");
   const [budget, setBudget] = useState("80000");
@@ -171,11 +172,7 @@ function StyleFinder() {
               </legend>
 
               <div className="style-finder__options">
-                <label
-                  className={
-                    style === "minimalista" ? "is-selected" : ""
-                  }
-                >
+                <label className={style === "minimalista" ? "is-selected" : ""}>
                   <input
                     type="radio"
                     name="style"
@@ -187,19 +184,13 @@ function StyleFinder() {
                   />
 
                   <span className="style-finder__option-check">✓</span>
-                  <span className="style-finder__option-title">
-                    Minimalista
-                  </span>
+                  <span className="style-finder__option-title">Minimalista</span>
                   <span className="style-finder__option-description">
                     Simple y esencial
                   </span>
                 </label>
 
-                <label
-                  className={
-                    style === "artistico" ? "is-selected" : ""
-                  }
-                >
+                <label className={style === "artistico" ? "is-selected" : ""}>
                   <input
                     type="radio"
                     name="style"
@@ -211,19 +202,13 @@ function StyleFinder() {
                   />
 
                   <span className="style-finder__option-check">✓</span>
-                  <span className="style-finder__option-title">
-                    Artístico
-                  </span>
+                  <span className="style-finder__option-title">Artístico</span>
                   <span className="style-finder__option-description">
                     Arte y expresión
                   </span>
                 </label>
 
-                <label
-                  className={
-                    style === "grafico" ? "is-selected" : ""
-                  }
-                >
+                <label className={style === "grafico" ? "is-selected" : ""}>
                   <input
                     type="radio"
                     name="style"
@@ -235,9 +220,7 @@ function StyleFinder() {
                   />
 
                   <span className="style-finder__option-check">✓</span>
-                  <span className="style-finder__option-title">
-                    Gráfico
-                  </span>
+                  <span className="style-finder__option-title">Gráfico</span>
                   <span className="style-finder__option-description">
                     Diseños con carácter
                   </span>
@@ -252,11 +235,7 @@ function StyleFinder() {
               </legend>
 
               <div className="style-finder__colors">
-                <label
-                  className={
-                    color === "Marfil" ? "is-selected" : ""
-                  }
-                >
+                <label className={color === "Marfil" ? "is-selected" : ""}>
                   <input
                     type="radio"
                     name="color"
@@ -272,11 +251,7 @@ function StyleFinder() {
                   <span className="style-finder__option-check">✓</span>
                 </label>
 
-                <label
-                  className={
-                    color === "Negro" ? "is-selected" : ""
-                  }
-                >
+                <label className={color === "Negro" ? "is-selected" : ""}>
                   <input
                     type="radio"
                     name="color"
@@ -317,9 +292,7 @@ function StyleFinder() {
             </fieldset>
 
             <div className="style-finder__summary">
-              <p className="style-finder__summary-label">
-                TU SELECCIÓN
-              </p>
+              <p className="style-finder__summary-label">TU SELECCIÓN</p>
 
               <div className="style-finder__summary-details">
                 <span>{styleLabels[style]}</span>
@@ -351,7 +324,10 @@ function StyleFinder() {
           <div className="style-finder__result" aria-live="polite">
             <div className="style-finder__result-image">
               <img
-                src={recommendation.selectedColor.image}
+                src={imageUrl(
+                  recommendation.selectedColor.catalog_image ||
+                  recommendation.selectedColor.image
+                )}
                 alt={`${recommendation.product.name} en color ${recommendation.selectedColor.name}`}
               />
               <span className="style-finder__result-tag">
@@ -378,12 +354,15 @@ function StyleFinder() {
                 Color seleccionado: {recommendation.selectedColor.name}
               </p>
 
-              <a
-                href={`/producto/${recommendation.product.id}`}
+              <button
+                type="button"
                 className="style-finder__result-link"
+                onClick={() =>
+                  navigate(`/producto/${recommendation.product.id}`)
+                }
               >
                 VER PRODUCTO <span>↗</span>
-              </a>
+              </button>
             </div>
           </div>
         )}

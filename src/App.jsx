@@ -270,7 +270,7 @@ function App() {
 
       <main>
         <Home />
-        <StyleFinder />
+        <StyleFinder navigate={navigate} />
         <Collection />
         <Contact />
       </main>
