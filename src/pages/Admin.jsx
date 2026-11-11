@@ -16,7 +16,7 @@ const formatDate = (date) =>
     timeStyle: "short",
   });
 
-function Admin({ onLogout }) {
+function Admin({ onLogout, navigate }) {
   const [products, setProducts] = useState([]);
   const [requests, setRequests] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -216,12 +216,13 @@ function Admin({ onLogout }) {
   return (
     <div className="admin-page">
       <header className="admin-header">
-        <a
+        <button
           className="admin-brand"
-          href={import.meta.env.BASE_URL}
+          type="button"
+          onClick={() => navigate("/")}
         >
           BOSNYD®
-        </a>
+        </button>
 
         <button
           className="admin-logout"

@@ -222,7 +222,7 @@ function App() {
       return <Login onLogin={handleLogin} />;
     }
 
-    return <Admin onLogout={handleLogout} />;
+    <Admin onLogout={handleLogout} navigate={navigate} />
   }
 
   // Página del carrito.

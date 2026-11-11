@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { imageUrl } from "../lib/imageUrl";
 import "../styles/cart.css";
 
 const WHATSAPP_NUMBER = "573002248841";
@@ -137,7 +138,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemove, navigate }) {
                 >
                   <img
                     className="cart-item__image"
-                    src={item.image}
+                    src={imageUrl(item.image)}
                     alt={`${item.name} color ${item.colorName}`}
                   />
 
