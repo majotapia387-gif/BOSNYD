@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { imageUrl } from "../lib/imageUrl";
 
 const formatPrice = (price) =>
   new Intl.NumberFormat("es-CO", {
@@ -215,7 +216,10 @@ function Admin({ onLogout }) {
   return (
     <div className="admin-page">
       <header className="admin-header">
-        <a className="admin-brand" href="/">
+        <a
+          className="admin-brand"
+          href={import.meta.env.BASE_URL}
+        >
           BOSNYD®
         </a>
 
@@ -270,7 +274,6 @@ function Admin({ onLogout }) {
         </h2>
 
         {loading && <p>Cargando productos...</p>}
-
         {error && <p role="alert">{error}</p>}
 
         {!loading && !error && products.length === 0 && (
@@ -281,7 +284,10 @@ function Admin({ onLogout }) {
           {products.map((product) => (
             <article className="admin-product" key={product.id}>
               <img
-                src={product.colors?.[0]?.image}
+                src={imageUrl(
+                  product.colors?.[0]?.catalog_image ||
+                  product.colors?.[0]?.image
+                )}
                 alt={product.name}
               />
 
@@ -466,7 +472,10 @@ function Admin({ onLogout }) {
 
           <div className="admin-request-list">
             {orders.map((order) => (
-              <article className="admin-request admin-order" key={order.id}>
+              <article
+                className="admin-request admin-order"
+                key={order.id}
+              >
                 <div className="admin-request-top">
                   <div>
                     <span
@@ -500,7 +509,10 @@ function Admin({ onLogout }) {
                         <div>
                           <strong>{item.name}</strong>
                           <p>
-                            Color: {item.colorName || item.color || "No especificado"}
+                            Color:{" "}
+                            {item.colorName ||
+                              item.color ||
+                              "No especificado"}
                           </p>
                           <p>Cantidad: {item.quantity}</p>
                         </div>
