@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 import { supabase } from "./lib/supabaseClient";
@@ -12,7 +13,7 @@ import Product from "./pages/Product";
 import StyleFinder from "./components/StyleFinder";
 import Cart from "./pages/cart";
 
-import "./styles/admi.css";
+import "./styles/Admi.css";
 
 function App() {
   const [path, setPath] = useState(window.location.pathname);
@@ -102,9 +103,14 @@ function App() {
     navigate("/login");
   }
 
-  function addToCart(product, color) {
+  function addToCart(product, color, size) {
     if (!color || color.available !== true) {
       alert("Esta variante está agotada.");
+      return;
+    }
+
+    if (!size) {
+      alert("Selecciona una talla antes de continuar.");
       return;
     }
 
@@ -112,13 +118,15 @@ function App() {
       const existingItem = previousItems.find(
         (item) =>
           item.productId === product.id &&
-          item.colorName === color.name
+          item.colorName === color.name &&
+          (item.size || "M") === size
       );
 
       if (existingItem) {
         return previousItems.map((item) =>
           item.productId === product.id &&
-          item.colorName === color.name
+          item.colorName === color.name &&
+          (item.size || "M") === size
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -132,37 +140,40 @@ function App() {
           price: Number(product.price),
           collection: product.collection,
           colorName: color.name,
-          image: color.image,
+          image: color.catalog_image || color.image,
+          size,
           quantity: 1,
         },
       ];
     });
 
-    alert(`${product.name} se agregó al carrito.`);
+    alert(`${product.name} talla ${size} se agregó al carrito.`);
   }
 
-  function updateCartQuantity(productId, colorName, quantity) {
+  function updateCartQuantity(productId, colorName, size, quantity) {
     if (quantity < 1) {
-      removeFromCart(productId, colorName);
+      removeFromCart(productId, colorName, size);
       return;
     }
 
     setCartItems((previousItems) =>
       previousItems.map((item) =>
         item.productId === productId &&
-        item.colorName === colorName
+        item.colorName === colorName &&
+        (item.size || "M") === size
           ? { ...item, quantity }
           : item
       )
     );
   }
 
-  function removeFromCart(productId, colorName) {
+  function removeFromCart(productId, colorName, size) {
     setCartItems((previousItems) =>
       previousItems.filter(
         (item) =>
           item.productId !== productId ||
-          item.colorName !== colorName
+          item.colorName !== colorName ||
+          (item.size || "M") !== size
       )
     );
   }
