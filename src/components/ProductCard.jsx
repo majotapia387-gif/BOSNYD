@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-
+import { imageUrl } from "../lib/imageUrl";
 function ProductCard({ product }) {
   const [selectedColorName, setSelectedColorName] = useState(
     product.colors?.[0]?.name
@@ -37,7 +37,7 @@ function ProductCard({ product }) {
       <div className="product-card__image-container">
         <img
           className="product-card__image"
-          src={selectedColor.image}
+          src={imageUrl(selectedColor.image)}
           alt={`Camiseta ${product.name} color ${selectedColor.name}`}
         />
 

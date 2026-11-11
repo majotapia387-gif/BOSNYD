@@ -1,22 +1,21 @@
 import { useState } from "react";
 import "../styles/home.css";
-
+import { imageUrl } from "../lib/imageUrl";
 const historyImages = [
   {
-    src: "/images/Historia/historia-bosnyd-01.jpg.jpeg",
+    src: imageUrl("/images/Historia/historia-bosnyd-01.jpg.jpeg"),
     alt: "Campaña editorial BOSNYD, fotografía 1",
   },
   {
-    src: "/images/Historia/historia-bosnyd-02.jpg.jpeg",
+    src: imageUrl("/images/Historia/historia-bosnyd-02.jpg.jpeg"),
     alt: "Campaña editorial BOSNYD, fotografía 2",
   },
   {
-    src: "/images/Historia/historia-bosnyd-03.jpg.jpeg",
+    src: imageUrl("/images/Historia/historia-bosnyd-03.jpg.jpeg"),
     alt: "Campaña editorial BOSNYD, fotografía 3",
-  },
- 
+},
   {
-    src: "/images/Historia/historia-bosnyd-05.jpg.jpeg",
+    src: imageUrl("/images/Historia/historia-bosnyd-05.jpg.jpeg"),
     alt: "Campaña editorial BOSNYD, fotografía 5",
   },
 ];
@@ -67,7 +66,7 @@ const [activeEssence, setActiveEssence] = useState(1);
 
         <div className="hero__image">
           <img
-            src="/images/modelo-bosnyd-marfil.jpeg.png"
+           src={imageUrl("/images/modelo-bosnyd-marfil.jpeg.png")}
             alt="Modelo vistiendo una camiseta BOSNYD de la colección ORIGEN"
           />
         </div>
@@ -108,7 +107,7 @@ const [activeEssence, setActiveEssence] = useState(1);
   <div className="collection-intro__main">
     <div className="collection-intro__image">
       <img
-        src="/images/Historia/mi-nueva-foto.jpg.jpeg"
+       src={imageUrl("/images/Historia/mi-nueva-foto.jpg.jpeg")}
         alt="Campaña editorial de la marca BOSNYD"
       />
 
