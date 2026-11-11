@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
-import "../styles/Cart.css";
+import "../styles/cart.css";
 
 const WHATSAPP_NUMBER = "573002248841";
 
